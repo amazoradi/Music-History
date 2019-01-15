@@ -30,6 +30,9 @@ FROM Artist
 LEFT Join Album al ON al.artistId = artist.artistId --left didnt really change much for me
 LEFT JOIN Song sg ON sg.artistID = artist.artistId
 WHERE ArtistName LIKE "Rainbow Kitten Surprise" --"Rainbow%"
+-- Left join will show full table with null if there is no data 
+-- since we are left joining from artist onto album, every artist will be displayed, and if there is n album, null will be displayed
+-- left join used if you want to get all the results back (regardless if the intersection exists) and the intersection ( null if it doesnt exist)
 
 -- Write a SELECT statement to display how many songs exist for each album. You'll need to use the COUNT() function and the GROUP BY keyword sequence.
 
@@ -37,6 +40,12 @@ SELECT count(songId) as song_count, Album.Title
 from Song, Album
 WHERE song.AlbumId = Album.AlbumId
 GROUP BY ALbum.Title
+-- Same but with JOIN instead
+Select count() as "# of songs", album.title
+from Song
+join Album on song.albumID = album.albumid
+group by song.artistid
+order by album.title desc
 
 -- Write a SELECT statement to display how many songs exist for each artist. You'll need to use the COUNT() function and the GROUP BY keyword sequence.
 
@@ -44,12 +53,23 @@ SELECT count(songId) as song_count, artist.artistname
 from Song, Artist
 WHERE song.ArtistId = Artist.ArtistId
 GROUP BY Artist.ArtistName
+-- Same but with JOIN instead
+Select count() as "# of songs", artist.ArtistName
+from Song
+join Artist on song.artistID = artist.artistid
+group by song.artistid
+order by artist.artistName desc
 
 -- Write a SELECT statement to display how many songs exist for each genre. You'll need to use the COUNT() function and the GROUP BY keyword sequence.
 
 SELECT count(songId) as song_count, Genre.Label
 from Song, Genre
 WHERE song.GenreId = Genre.GenreId
+GROUP BY Genre.Label
+-- Same but with JOIN instead
+SELECT count(songId) as song_count, Genre.Label
+from Song
+JOin Genre on song.GenreId = Genre.GenreId
 GROUP BY Genre.Label
 
 
@@ -67,3 +87,7 @@ FROM Song
 SELECT Song.Title, album.title , Max(Song.SongLength) as The_Longest_of_Long
 FROM Song, Album
 WHERE Song.AlbumId = Album.AlbumId
+-- Same but with JOIN instead
+SELECT Song.Title, album.title , Max(Song.SongLength) as The_Longest_of_Long
+FROM Song
+JOIN Album ON Song.AlbumId = Album.AlbumId
